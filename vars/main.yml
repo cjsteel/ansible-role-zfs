@@ -1,2 +1,17 @@
 ---
 # vars file for ansible-zfs
+_zfs_packages:
+  default:
+    - zfsutils-linux 
+  Archlinux:
+    - zfsutils-linux
+  Debian:
+    - zfsutils-linux
+  CentOS:
+    - zfs
+  CentOS-7:
+    - zfs
+  Ubuntu:
+    - zfsutils-linux 
+
+zfs_packages: "{{ _zfs_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_zfs_packages[ansible_distribution] | default(_zfs_packages['default'])) }}"
