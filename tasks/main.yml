@@ -1,18 +1,10 @@
 ---
 # tasks file for ansible-zfs
-#- include: debian.yml
-#  when: ansible_distribution == "Debian"
+- include: debian.yml
+  when: ansible_distribution == "Debian"
 
-#- include: ubuntu.yml
-#  when: ansible_distribution == "Ubuntu"
-
-- name: install zfs
-  package:
-    name: "{{ zfs_packages }}"
-    state: present
-  register: zfs_install_zfs
-  until: zfs_install_zfs is succeeded
-  retries: 3
+- include: ubuntu.yml
+  when: ansible_distribution == "Ubuntu"
 
 - include: manage_zfs.yml
 

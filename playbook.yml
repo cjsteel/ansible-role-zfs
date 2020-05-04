@@ -19,31 +19,40 @@
         zfs_monitoring_email_dest: root@localhost
         # Defines zpool(s) to manage
         zfs_pools:
-          - name: HDD-TANK-01
-            mount: /HDD-TANK-01 #/data/beegfs/beegfs_oss/dev/HDD-TANK-01
+          - name: tank
+            mount: /tank #/data/beegfs/beegfs_oss/dev/HDD-TANK-01
             action: create
             #atime: on
             compression: lz4 # on | off (default) | lz4...
             # Define devices to create pool with...can define multiple by | sdb sdc sdd sde sdf | all on one line w/spaces
             devices:
-              - pci-0000:00:14.0-scsi-0:0:2:0
-              - pci-0000:00:14.0-scsi-0:0:3:0
-              - pci-0000:00:14.0-scsi-0:0:4:0
-              - pci-0000:00:14.0-scsi-0:0:5:0
-              - pci-0000:00:14.0-scsi-0:0:1:0
+              # - pci-0000:00:14.0-scsi-0:0:1:0 # iso9660
               - pci-0000:00:14.0-scsi-0:0:2:0
               - pci-0000:00:14.0-scsi-0:0:3:0
               - pci-0000:00:14.0-scsi-0:0:4:0
               - pci-0000:00:14.0-scsi-0:0:5:0
               - pci-0000:00:14.0-scsi-0:0:6:0
+            type: raidz2
+            state: present
+              
+          - name: tank
+            mount: /tank #/data/beegfs/beegfs_oss/dev/HDD-TANK-01
+            action: add
+            devices:
               - pci-0000:00:14.0-scsi-0:0:8:0
               - pci-0000:00:14.0-scsi-0:0:9:0
               - pci-0000:00:14.0-scsi-0:0:10:0
               - pci-0000:00:14.0-scsi-0:0:11:0
               - pci-0000:00:14.0-scsi-0:0:12:0
+            type: raidz2
+            state: present
+
+          - name: tank
+            mount: /tank #/data/beegfs/beegfs_oss/dev/HDD-TANK-01
+            action: add
+            devices:
               - pci-0000:00:14.0-scsi-0:0:13:0
               - pci-0000:00:14.0-scsi-0:0:14:0
-              - pci-0000:00:14.0-scsi-0:0:15:0
-            type: raidz2
+            type: spare
             state: present
 

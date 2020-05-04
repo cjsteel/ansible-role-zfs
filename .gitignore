@@ -1,0 +1,6 @@
+.vagrant
+.molecule
+*.log
+*.swp
+.tox
+
