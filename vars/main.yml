@@ -1,2 +1,43 @@
 ---
 # vars file for ansible-zfs
+
+# ZFS
+_zfs_packages:
+  default:
+    - zfsutils-linux 
+  Archlinux:
+    - zfsutils-linux
+  Debian:
+    - zfsutils-linux
+  CentOS:
+    - zfs
+  CentOS-7:
+    - zfs
+  Ubuntu:
+    - zfsutils-linux 
+
+zfs_packages: "{{ _zfs_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_zfs_packages[ansible_distribution] | default(_zfs_packages['default'])) }}"
+
+
+# ISCSI
+_iscsi_packages:
+  default:
+    - open-iscsi
+  Debian:
+    - open-iscsi
+  Ubuntu:
+    - open-iscsi
+
+iscsi_packages: "{{ _iscsi_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_iscsi_packages[ansible_distribution] | default(_iscsi_packages['default'])) }}"
+
+
+# NFS
+_nfs_packages:
+  default:
+    - nfs-kernel-server
+  Debian:
+    - nfs-kernel-server
+  Ubuntu:
+    - nfs-kernel-server
+
+nfs_packages: "{{ _nfs_packages[ansible_distribution ~ '-' ~ ansible_distribution_major_version] | default(_nfs_packages[ansible_distribution] | default(_nfs_packages['default'])) }}"

@@ -1,7 +1,61 @@
 ---
 # tasks file for ansible-zfs
-- include: debian.yml
-  when: ansible_distribution == "Debian"
+#- include: debian.yml
+#  when: ansible_distribution == "Debian"
+
+- name: install zfs
+  package:
+    name: "{{ zfs_packages }}"
+    state: present
+  register: zfs_install_zfs
+  until: zfs_install_zfs is succeeded
+  retries: 3
+
+- name: install iscsi
+  package:
+    name: "{{ iscsi_packages }}"
+    state: present
+  register: zfs_install_iscsi
+  until: zfs_install_iscsi is succeeded
+  retries: 3
+  when: >
+        zfs_enable_iscsi is defined and
+        zfs_enable_iscsi
+
+- name: uninstall iscsi
+  package:
+    name: "{{ iscsi_packages }}"
+    state: absent
+  register: zfs_uninstall_iscsi
+  until: zfs_uninstall_iscsi is succeeded
+  retries: 3
+  when: >
+        zfs_enable_iscsi is defined and
+        not zfs_enable_iscsi
+
+- name: installing NFS (if enabled)
+  package:
+    name: "{{ nfs_packages }}"
+    state: present
+  register: zfs_install_nfs
+  until: zfs_install_nfs is succeeded
+  retries: 3
+  when: >
+        zfs_enable_nfs is defined and
+        zfs_enable_nfs
+
+- name: uninstall NFS
+  package:
+    name: "{{ nfs_packages }}"
+    state: absent
+  register: zfs_uninstall_nfs
+  until: zfs_uninstall_nfs is succeeded
+  retries: 3
+  when: >
+        zfs_enable_nfs is defined and
+        not zfs_enable_nfs
+
+
 
 - include: ubuntu.yml
   when: ansible_distribution == "Ubuntu"
